@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>RT Multiplayer Game</title>
+		<meta charset="utf-8">
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="style/reset.css">
+		<link rel="stylesheet" href="style/game.css">
+		
+	</head>
+	
+	<body>
+	
+		<div id='canvasdiv'>
+			<canvas id="gameCanvas"></canvas>
+		</div>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script><!-- http://localhost:8000 -->
+		<script src="/velocity.min.js"></script>
+		<script src="js/requestAnimationFrame.js"></script>
+		<script src="js/Keys.js"></script>
+		<script src="js/Player.js"></script>
+		<script src="js/game-client.js"></script>
+		
+		<script>
+			var name = prompt("Enter a name");
+			
+			// Initialise the game
+			init(name);
+			animate();
+		</script>
+		
+		<div id='debug' style="position:fixed;top:0;left:0;width:50px;height:25px;background-color:#CCC;">
+		
+		</div>
+		
+		<div id='chat' > 
+			<div id='messages'>
+					<div id='eachmessage'>Welcome!</div>
+					<!-- messages inserted here -->
+			</div>
+			
+			<div id="messagebox">
+			<!-- <form id="create-message" > 
+				<fieldset> -->
+					<!-- <legend>Chat</legend> -->
+					<textarea placeholder="Message" id="message" name="message"></textarea><br>
+					<button onclick="sendMessage();" id='sendbutton'>Send</button>
+				<!-- </fieldset>
+			</form> -->
+			</div>
+		</div>
+		
+	</body>
+</html>
