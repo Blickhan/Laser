@@ -49,14 +49,21 @@ function init(name) {
 	// Calculate a random start position for the local player
 	// The minus 5 (half a player size) stops the player being
 	// placed right on the egde of the screen
-	var startX = Math.round(Math.random()*(canvas.width-5)),
-		startY = Math.round(Math.random()*(canvas.height-5));
+	var startX = Math.round(Math.random()*(canvas.width-30)),
+		startY = Math.round(Math.random()*(canvas.height-30));
 
-	var newcolor = '#'+Math.floor(Math.random()*16777215).toString(16);
+	// a few pleasant colors to choose from
+	var colors = ['#513dab','#3ae1aa','#00ffff','#43dde5','#9a00d4','#ffff00','#ff24ca','#9868f1','#0099ff','#ff4500','#d20080','#e51e1e','#108845','#0033ff']
+	//var newcolor = '#'+Math.floor(Math.random()*16777215).toString(16);
+	var newcolor = colors[Math.floor(Math.random()*colors.length)];	
+		
+	if(name == "Jason"){newcolor = '#6600ff';}
+	else if(validTextColor(name)){newcolor = name;}
 		
 	// Initialise the local player
 	localPlayer = new Player(startX, startY, name, newcolor);
 
+	
 	// Initialise socket connection
 	
 	socket = io();//"http://localhost";
@@ -68,7 +75,7 @@ function init(name) {
 
 	// Start listening for events
 	setEventHandlers();
-
+	
 	onReady();
 
 };
@@ -123,11 +130,11 @@ var setEventHandlers = function() {
 	
 	socket.on('scores-available', function (data) {
 		
-		$('#scores').html('<div id="eachscore" style="color:white;"><u>Scores</u></div>');
+		$('#scores').html('<div id="eachscore" style="color:white;">Scores <span class="glyphicon glyphicon-list"></span></div>');
 		for (var i = 0; i < data.s.length; i++) {
 			displayScore(i+1,data.s[i]);
 		}
-		$('#topscores').html('<div id="eachscore" style="color:white;"><u>High Scores</u></div>');
+		$('#topscores').html('<div id="eachscore" style="color:white;"><span class="glyphicon glyphicon-bishop"></span> High Scores</div>');
 		for (var i = 0; i < data.all.length; i++) {
 			displayTopScore(i+1,data.all[i]);
 		}
@@ -175,7 +182,7 @@ function sendMessage(){
     socket.emit('add-message', {
         name: localPlayer.getName(),
 		color: localPlayer.getColor(),
-        message: $('textarea[name="message"]').val()
+        message: escapeHtml($('textarea[name="message"]').val())
     });
 
     // Clear out the message value
@@ -249,6 +256,7 @@ function onMovePlayer(data) {
 	// Update player position
 	movePlayer.setX(data.x);
 	movePlayer.setY(data.y);
+	movePlayer.setSize(data.size);
 };
 
 // Remove player
@@ -311,7 +319,7 @@ function animate() {
 **************************************************/
 function update(dt) {
 	
-	updateScore();
+	updateScore(dt);
 
 	
 	for(var i = 0; i < lasers.length; i++){
@@ -319,16 +327,17 @@ function update(dt) {
 	}
 	
 	// Update local player and check for change
-	if (localPlayer.update(dt, keys, remotePlayers)) {
+	//if (localPlayer.update(dt, keys, remotePlayers)) {
+	localPlayer.update(dt, keys, remotePlayers);
 		// Send local player data to the game server
-		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY()});
-	};
+		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY(), size: localPlayer.getSize()});
+	//};
 };
 
-function updateScore() {
+function updateScore(dt) {
 	//score = Math.round(Date.now() - creationTime);
-	localPlayer.setScore(Math.round(Date.now() - localPlayer.getCreationTime())/1000);
-
+	//localPlayer.setScore(Math.round(Date.now() - localPlayer.getCreationTime())/1000);
+	localPlayer.setScore(localPlayer.getScore() + dt/1000);
 	
 	// update score on server 
 	updateScoreTick++;
@@ -394,8 +403,43 @@ function playerById(id) {
 	return false;
 };
 
+//this works in preventing <script> in sendMessage()
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+};
+
+// UNSAFE with unsafe strings; only use on previously-escaped ones!
+function unescapeHtml(escapedStr) {
+    var div = document.createElement('div');
+    div.innerHTML = escapedStr;
+    var child = div.childNodes[0];
+    return child ? child.nodeValue : '';
+};
+
+function validTextColor(stringToTest) {
+    //Alter the following conditions according to your need.
+    if (stringToTest === "") { return false; }
+    if (stringToTest === "inherit") { return false; }
+    if (stringToTest === "transparent") { return false; }
+    
+    var image = document.createElement("img");
+    image.style.color = "rgb(0, 0, 0)";
+    image.style.color = stringToTest;
+    if (image.style.color !== "rgb(0, 0, 0)") { return true; }
+    image.style.color = "rgb(255, 255, 255)";
+    image.style.color = stringToTest;
+    return image.style.color !== "rgb(255, 255, 255)";
+}
+
 function onReady(){
 	$(document).ready(function(){
+	
+		$('#sendbutton').click(function() {
+			sendmessage();
+		});
+	
 		$(document).keydown(function(event) {
 			if(lastEvent && lastEvent.keyCode == event.keyCode){
 				return;

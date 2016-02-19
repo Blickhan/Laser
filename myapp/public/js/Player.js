@@ -5,7 +5,8 @@ var Player = function(startX, startY, name, color) {
 	var x = startX,
 		y = startY,
 		id,
-		size = 30,
+		defaultSize = 30,
+		size = defaultSize,
 		speed = .4,
 		playername = name,
 		playercolor = color,
@@ -109,7 +110,7 @@ var Player = function(startX, startY, name, color) {
 			}
 			
 		};
-
+		
 		if(!allowMove){
 			x = prevX;
 			y = prevY;
@@ -120,6 +121,11 @@ var Player = function(startX, startY, name, color) {
 		if(y < 0){y = 0;}
 		if(y > document.getElementById("gameCanvas").clientHeight - size){y = document.getElementById("gameCanvas").clientHeight - size;}
 
+		if(alive == false){
+			respawn();
+		}
+		
+		grow();
 		
 		return (prevX != x || prevY != y) ? true : false;
 	};
@@ -128,10 +134,35 @@ var Player = function(startX, startY, name, color) {
 		return !(x > p2.getX() + p2.getSize() || x + size < p2.getX() || y > p2.getY() + p2.getSize() || y + size < p2.getY());
 	}
 
+	function respawn(){	
+		x = Math.round(Math.random()*(document.getElementById("gameCanvas").clientWidth-size));
+		y = Math.round(Math.random()*(document.getElementById("gameCanvas").clientHeight-size));
+		size = defaultSize;
+		score = 0;
+		alive = true;
+	};
+	
+	function grow(){
+	
+		size = size + score/2000;
+	
+	}
+	
 	// Draw player
 	var draw = function(ctx) {
+		var d = new Date();
+		var n = d.getMilliseconds()/1000;
 		
-		ctx.fillStyle =  playercolor;
+		var pulse = (Math.abs(Math.sin(n)))*size; // sine wave
+		//var pulse = (1-Math.abs(score%2 - 1))*size; //triangle wave
+		if(pulse < size/3){pulse = size/3;}
+		else if(pulse > size*2/3){pulse = size*2/3;}
+		
+		var grd=ctx.createRadialGradient(x+size/2,y+size/2,pulse,x+size*2/3,y+size*2/3,size);
+		grd.addColorStop(0,playercolor);
+		grd.addColorStop(1,"black");
+		
+		ctx.fillStyle =  grd;
 		ctx.fillRect(x, y, size, size);
 		ctx.strokeStyle =  '#000';
 		ctx.strokeRect(x, y, size, size);

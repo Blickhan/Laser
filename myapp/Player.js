@@ -7,8 +7,9 @@ var Player = function(startX, startY, name, color) {
 		playername = name,
 		playercolor = color,
 		id,
+		size = 30,
 		alive = true,
-		score = 0;
+		score = 0,
 		creationTime = Date.now();
 
 	// Getters and setters
@@ -67,6 +68,14 @@ var Player = function(startX, startY, name, color) {
 	var setCreationTime = function(ct) {
 		creationTime = ct;
 	};
+	
+	var getSize = function() {
+		return size;
+	};
+	
+	var setSize = function(s) {
+		size = s;
+	};
 
 	// Define which variables and methods can be accessed
 	return {
@@ -82,6 +91,8 @@ var Player = function(startX, startY, name, color) {
 		getY: getY,
 		setX: setX,
 		setY: setY,
+		setSize: setSize,
+		getSize: getSize,
 		getName: getName,
 		setName: setName,
 		id: id

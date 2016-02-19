@@ -63,6 +63,7 @@ function generateLasers(){
 	
 	var i;
 	numOfLasers = Math.floor(topscore/4) + 1;
+	if(numOfLasers > 1000){numOfLasers = 1000;}
 	lasers = [];
 	
 	for(i = 0; i < numOfLasers; i++){
@@ -185,6 +186,9 @@ function onUpdateScore(data) {
 		return;
 	};
 
+	//score cap
+	if(data.score > 1337){data.score = 1337;}
+	
 	// Update player score
 	thisPlayer.setScore(data.score);
 	
@@ -267,9 +271,10 @@ function onMovePlayer(data) {
 	// Update player position
 	movePlayer.setX(data.x);
 	movePlayer.setY(data.y);
+	movePlayer.setSize(data.size);
 
 	// Broadcast updated position to connected socket clients
-	this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
+	this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY(), size: movePlayer.getSize()});
 };
 
 

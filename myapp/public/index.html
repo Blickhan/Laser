@@ -9,15 +9,6 @@
 		<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 		<link rel="stylesheet" href="style/reset.css">
 		<link rel="stylesheet" href="style/game.css">
-		
-	</head>
-	
-	<body>
-	
-		<div id='canvasdiv'>
-			<canvas id="gameCanvas"></canvas>
-		</div>
-		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script><!-- http://localhost:8000 -->
 		<script src="/velocity.min.js"></script>
@@ -26,6 +17,17 @@
 		<script src="js/Player.js"></script>
 		<script src="js/Laser.js"></script>
 		<script src="js/game-client.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">-->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		
+	</head>
+	
+	<body>
+	
+		<div id='canvasdiv'>
+			<canvas id="gameCanvas"></canvas>
+		</div>
 		
 		<script>
 			var name = prompt("Dodge the lasers!\n\nEnter a name");
@@ -43,9 +45,11 @@
 		<div id='scores'></div>
 		<div id='topscores'></div>
 		
-		<div id='chat' > 
-			<div id='messages'>
-					<div id='eachmessage'>Welcome!</div>
+		<div class="form-group" id='chat' > 
+			<div class="form-control" id='messages'>
+					<div id='eachmessage1'><span style="font-weight:bold;">Welcome!</span></div>
+					<div id='eachmessage'><span style="color:blue;font-weight:bold;">Updates (Feb. 18, 2016):</span> name colors, growth over time, respawn after laser hit,pulsing player color </div>
+					<div id='eachmessage'><span style="color:red;font-weight:bold;">Bugs:</span> stick to other players, score starts at 4 </div>
 					<!-- messages inserted here -->
 			</div>
 			
@@ -53,8 +57,8 @@
 			<!-- <form id="create-message" > 
 				<fieldset> -->
 					<!-- <legend>Chat</legend> -->
-					<textarea placeholder="Message" id="message" name="message"></textarea><br>
-					<button onclick="sendMessage();" id='sendbutton'>Send</button>
+					<textarea class="form-control" placeholder="Message" id="message" name="message"></textarea><br>
+					<button type="button" id='sendbutton' class="btn btn-default btn-block"><span style="font-weight:bold;">Send</span> <span class="glyphicon glyphicon-send"></span></button>
 				<!-- </fieldset>
 			</form> -->
 			</div>

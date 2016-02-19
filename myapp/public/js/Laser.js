@@ -89,7 +89,7 @@ var Laser = function(startX, startY, color, startDirection) {
 		//var i;
 		//for (i = 0; i < localPlayer.length; i++) {
 			if(playersColliding(localPlayer)){
-				localPlayer.setCreationTime(Date.now());
+				localPlayer.setAlive(false);		
 			}
 			
 		//};
