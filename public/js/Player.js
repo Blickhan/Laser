@@ -144,7 +144,7 @@ var Player = function(startX, startY, name, color) {
 	
 	function grow(){
 	
-		size = size + score/2000;
+		size = size + score/4000;
 	
 	}
 	
@@ -152,8 +152,8 @@ var Player = function(startX, startY, name, color) {
 	var draw = function(ctx) {
 		var d = new Date();
 		var n = d.getMilliseconds()/1000;
-		
-		var pulse = (Math.abs(Math.sin(n)))*size; // sine wave
+		if(n>.5){n = 1-n;}
+		var pulse = (.75-Math.abs(n))*size; // custom wave
 		//var pulse = (1-Math.abs(score%2 - 1))*size; //triangle wave
 		if(pulse < size/3){pulse = size/3;}
 		else if(pulse > size*2/3){pulse = size*2/3;}

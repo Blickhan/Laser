@@ -128,7 +128,9 @@ function onSocketConnection(client) {
 	
 	client.on('add-message', function(data){
 		//messages.push(data);
+		
 		sockets.forEach(function(client){
+			
 			client.emit('message-added', data);
 		});
 	});	
@@ -291,7 +293,6 @@ function playerById(id) {
 	
 	return false;
 };
-
 
 /**************************************************
 ** RUN THE GAME

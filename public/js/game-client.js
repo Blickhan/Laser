@@ -53,7 +53,7 @@ function init(name) {
 		startY = Math.round(Math.random()*(canvas.height-30));
 
 	// a few pleasant colors to choose from
-	var colors = ['#513dab','#3ae1aa','#00ffff','#43dde5','#9a00d4','#ffff00','#ff24ca','#9868f1','#0099ff','#ff4500','#d20080','#e51e1e','#108845','#0033ff']
+	var colors = ['#3ae1aa','#00ffff','#6600ff','#ffff00','#ff24ca','#ff4500','#d20080','#108845','#0033ff']
 	//var newcolor = '#'+Math.floor(Math.random()*16777215).toString(16);
 	var newcolor = colors[Math.floor(Math.random()*colors.length)];	
 		
@@ -169,7 +169,7 @@ function addMessage (data) {
     $('#messages').append("<div id='eachmessage'><font style='color:" +
 		data.color+";font-weight:bold;'>" +
         data.name + "</font>: " +
-        data.message + "<br></div>");
+        escapeHtml(data.message) + "<br></div>");
 	
 	$('#messages').stop().animate({
 			scrollTop: $("#messages")[0].scrollHeight
@@ -182,7 +182,7 @@ function sendMessage(){
     socket.emit('add-message', {
         name: localPlayer.getName(),
 		color: localPlayer.getColor(),
-        message: escapeHtml($('textarea[name="message"]').val())
+        message: $('textarea[name="message"]').val()
     });
 
     // Clear out the message value
@@ -437,7 +437,7 @@ function onReady(){
 	$(document).ready(function(){
 	
 		$('#sendbutton').click(function() {
-			sendmessage();
+			sendMessage();
 		});
 	
 		$(document).keydown(function(event) {
