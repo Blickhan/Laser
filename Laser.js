@@ -1,12 +1,13 @@
 /**************************************************
 ** LASER CLASS
 **************************************************/
-var Laser = function(startX, startY, color,startDirection) {
+var Laser = function(startX, startY, color,startDirection,startType) {
 	var x = startX,
 		y = startY,
 		lasercolor = color,
 		id,
-		direction = startDirection;
+		direction = startDirection,
+		type = startType;
 
 	// Getters and setters
 	var getX = function() {
@@ -41,6 +42,13 @@ var Laser = function(startX, startY, color,startDirection) {
 		direction = newDirection;
 	};
 
+	var getType = function() {
+		return type;
+	};
+
+	var setType = function(newType) {
+		type = newType;
+	};
 
 	// Define which variables and methods can be accessed
 	return {
@@ -52,6 +60,8 @@ var Laser = function(startX, startY, color,startDirection) {
 		getY: getY,
 		setX: setX,
 		setY: setY,
+		getType: getType,
+		setType: setType,
 		id: id
 	}
 };

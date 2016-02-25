@@ -77,6 +77,7 @@ var Player = function(startX, startY, name, color) {
 		size = s;
 	};
 
+
 	// Define which variables and methods can be accessed
 	return {
 		setColor: setColor,

@@ -1,15 +1,16 @@
 /**************************************************
 ** LASER CLASS
 **************************************************/
-var Laser = function(startX, startY, color, startDirection) {
+var Laser = function(startX, startY, color, startDirection,startType) {
 	var x = startX,
 		y = startY,
 		w,
 		l,
 		id,
-		speed = 1,
+		speed = .8,
 		lasercolor = color,
-		direction = startDirection;
+		direction = startDirection,
+		type = startType;
 	
 	if(direction == 1 || direction == 3){
 		w = 50;
@@ -73,7 +74,14 @@ var Laser = function(startX, startY, color, startDirection) {
 		direction = newDirection;
 	};
 	
+	var getType = function() {
+		return type;
+	};
 
+	var setType = function(newType) {
+		type = newType;
+	};
+	
 	// Update laser position
 	var update = function(dt, localPlayer) {
 		
@@ -89,7 +97,13 @@ var Laser = function(startX, startY, color, startDirection) {
 		//var i;
 		//for (i = 0; i < localPlayer.length; i++) {
 			if(playersColliding(localPlayer)){
-				localPlayer.setAlive(false);		
+				if(type == 1){
+					localPlayer.setAlive(false);
+				}
+				else if(type == 2){
+					localPlayer.setScore(localPlayer.getScore()+1);
+					localPlayer.setSize(localPlayer.getSize()+.5);
+				}
 			}
 			
 		//};
@@ -134,6 +148,8 @@ var Laser = function(startX, startY, color, startDirection) {
 		getL: getL,
 		setW: setW,
 		setL: setL,
+		getType: getType,
+		setType: setType,
 		update: update,
 		draw: draw
 	}

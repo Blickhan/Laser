@@ -1,7 +1,7 @@
 /**************************************************
 ** GAME PLAYER CLASS
 **************************************************/
-var Player = function(startX, startY, name, color) {
+var Player = function(startX, startY, name, color,type) {
 	var x = startX,
 		y = startY,
 		id,
@@ -78,6 +78,8 @@ var Player = function(startX, startY, name, color) {
 	var setCreationTime = function(ct) {
 		creationTime = ct;
 	};
+	
+
 
 	// Update player position
 	var update = function(dt, keys, remotePlayers) {

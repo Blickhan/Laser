@@ -111,7 +111,7 @@ var setEventHandlers = function() {
 	socket.on("update lasers", function(data) {
 		lasers = [];
 		for(var i = 0; i <data.length; i++){
-			var newLaser = new Laser(data[i].x,data[i].y,data[i].color,data[i].direction);
+			var newLaser = new Laser(data[i].x,data[i].y,data[i].color,data[i].direction,data[i].type);
 			lasers.push(newLaser);
 		}
 	});

@@ -85,10 +85,22 @@ function generateLasers(){
 			ly = Math.floor((Math.random() * 300) + 2000);
 		}
 
+		var probability = Math.floor((Math.random()*100) + 1);
+		var laserType = 1;
+		var laserColor = '#ff0000'
 		
-		var newLaser = new Laser(lx, ly, '#ff0000', laserDirection);
+		if(probability > 60){
+			laserType = 2;//powerup laser
+			laserColor = '#0000ff'
+		}
+		else{
+			laserType = 1;//death laser 
+			laserColor = '#ff0000';
+		}
 		
-		lasers.push({x: newLaser.getX(), y: newLaser.getY(), color: newLaser.getColor(), direction: newLaser.getDirection()});
+		var newLaser = new Laser(lx, ly, laserColor, laserDirection,laserType);
+		
+		lasers.push({x: newLaser.getX(), y: newLaser.getY(), color: newLaser.getColor(), direction: newLaser.getDirection(), type: newLaser.getType()});
 	}
 
 	// send laser info to each client
