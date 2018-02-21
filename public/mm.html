@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div {
+    width: 400px;
+    height: 200px;
+    border: 1px solid black;
+}
+p {
+	color: #FFF;
+	font-size: 16px;
+	text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+h2 {
+	color: #FFF;
+	font-size: 22;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+h3 {
+	color: #FFF;
+	font-size: 20;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+
+}
+
+button {
+	color: #FFF;
+	font-weight: bold;
+	background-color: #996600;
+	border: 1px solid #33CC33;
+	text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+body {
+	background-image: url("concrete.png");
+	background-color: #cccccc;
+}
+
+</style>
+</head>
+<body>
+
+<h2><b><u>Addicting Pointless Game</b></u></h2>
+
+<p>Mouse over the rectangle below (pet the koala!) to acquire currency to buy upgrades.</p>
+
+<p id="timer"></p>
+
+<div onmousemove="myFunction()"><img src="images\koala.jpg" alt="The picture didn't load :(" style="width:400px;height:200px;"></div>
+
+<p id = "bonus"></p>
+
+<h3 id="currency"></h3><h3 id="scorePerSecond"></h3>
+
+<p><b><u id="moveUpgradeTotal">Movement Upgrades Total: +$1</u></b></p>
+
+<p id="moveUpgrade1Text">Income per Movement: +$1 X1</p>
+<button type="button" onclick ="moveUpgrade1()" id="moveUpgrade1Button">Upgrade for $1,000</button>
+
+<p id="moveUpgrade2Text">Income per Movement: +$100 X0</p>
+<button type="button" onclick ="moveUpgrade2()" id="moveUpgrade2Button">Upgrade for $1,000,000</button>
+
+<p id="moveUpgrade3Text">Income per Movement: +$10000 X0</p>
+<button type="button" onclick ="moveUpgrade3()" id="moveUpgrade3Button">Upgrade for $1,000,000,000</button>
+
+<p><b><u id="timeUpgradeTotal">Time Upgrades Total: +$0</u></b></p>
+
+<p id="timeUpgrade1Text">Income per Second: +$25 X0</p>
+<button type="button" onclick ="timeUpgrade1()" id="timeUpgrade1Button">Upgrade for $1,000</button>
+
+<p id="timeUpgrade2Text">Income per Second: +$2500 X0</p>
+<button type="button" onclick ="timeUpgrade2()" id="timeUpgrade2Button">Upgrade for $1,000,000</button>
+
+<p id="timeUpgrade3Text">Income per Second: +$250000 X0</p>
+<button type="button" onclick ="timeUpgrade3()" id="timeUpgrade3Button">Upgrade for $1,000,000,000</button>
+
+<p id="error"></p>
+
+<script>
+var score = 0;
+
+document.getElementById("currency").innerHTML = "$" + score;
+
+var movePoints = 1;
+var timePoints = 0;
+
+var errFlag = 0;
+
+var timeUntilBonus = 31;
+var timeUntilBonusConst = 31;
+var timeBonus = 6;
+var timeBonusConst = 6;
+var errDisplayTime = 2;
+var bonusFlag = 0;
+var spsFlag = 0;
+var score1 = 0;
+var score2 = 0;
+
+var moveUpgrade1Cost = 1000;
+var timeUpgrade1Cost = 1000;
+var timeUpgrade1Points = 25;
+var timeUpgrade1Amount = 0;
+var moveUpgrade1Points = 1;
+var moveUpgrade1Amount = 1;
+var moveUpgrade2Cost = 1000000;
+var timeUpgrade2Cost = 1000000;
+var timeUpgrade2Points = 2500;
+var timeUpgrade2Amount = 0;
+var moveUpgrade2Points = 100;
+var moveUpgrade2Amount = 0;
+var moveUpgrade3Cost = 1000000000;
+var timeUpgrade3Cost = 1000000000;
+var timeUpgrade3Points = 250000;
+var timeUpgrade3Amount = 0;
+var moveUpgrade3Points = 10000;
+var moveUpgrade3Amount = 0;
+
+var ds = 0;
+var dm = 0;
+var dh = 0;
+var dd = 0;
+
+var myVar=setInterval(function () {myTimer()}, 1000);
+document.getElementById("timer").innerHTML = "0 second(s)";
+document.getElementById("bonus").innerHTML = "Time until Bonus: " + (timeUntilBonusConst-1) + " second(s)"
+
+
+function myTimer() {
+	
+	//time section
+	ds = ds + 1;
+	
+	if(ds == 60){
+		dm = dm + 1;
+		ds = 0;
+		if(dm == 60){
+			dh = dh + 1;
+			dm = 0;
+			if(dh == 24){
+				dd = dd + 1;
+				dh = 0;
+			}
+		}
+	}
+	
+	// score per second
+	if(ds%2 == 0){
+		score1 = score;
+		scorePerSecond = score1 - score2;
+	}else{
+		score2 = score;
+		scorePerSecond = score2 - score1;
+	}
+	
+	if(scorePerSecond < 0){
+		scorePerSecond = timePoints;
+	}
+	
+	document.getElementById("scorePerSecond").innerHTML = "Score Per Second: $" + scorePerSecond;
+	
+		
+	
+	
+	// bonus section
+	timeUntilBonus = timeUntilBonus - 1;
+	if(timeUntilBonus >= 0){//if counting down the time until bonus print this
+		document.getElementById("bonus").innerHTML = "Time until Bonus: " + timeUntilBonus + " second(s)";
+	}
+	
+	if(timeUntilBonus < 0){//if timeUntilBonus is up
+		
+		timeBonus = timeBonus - 1;//count down bonus time
+	
+		if(bonusFlag == 0){//set the points to be doubled once
+			movePoints = movePoints * 2;
+			bonusFlag = 1;
+		}
+		//document.getElementById("moveUpgradeText").innerHTML = "Income per Movement: " + "$" + movePoints;
+		document.getElementById("bonus").innerHTML = "2X Movement Bonus: " + timeBonus + " second(s)";
+		
+		if(timeBonus <= 0){//when time bonus is up
+			timeUntilBonus = timeUntilBonusConst;//reset time until bonus
+			timeBonus = timeBonusConst;//reset bonus time
+			bonusFlag = 0;//reset flag
+			movePoints = movePoints / 2;//points go back to normal
+		}
+	}
+	
+	//error time section
+	if(errFlag == 1){
+		document.getElementById("error").innerHTML = "";
+		errDisplayTime = errDisplayTime - 1;
+		
+		if(errDisplayTime <= 0){
+			errFlag = 0;
+			errDisplayTime = 2;
+		}
+	}
+	
+	//time points section
+	score += timePoints;
+	
+	//print format section
+	if(dm == 0 && dh == 0 && dd == 0){
+		document.getElementById("timer").innerHTML = ds + " second(s)";
+	}else if(dh == 0 && dd == 0){
+		document.getElementById("timer").innerHTML = dm + " minute(s) " + ds + " second(s)";
+	}else if(dd == 0){
+		document.getElementById("timer").innerHTML = dh + " hour(s) " + dm + " minute(s) " + ds + " second(s)";
+	}else{
+		document.getElementById("timer").innerHTML = dd + " day(s) " + dh + " hour(s) " + dm + " minute(s) " + ds + " second(s)";
+	}
+	
+	if(bonusFlag == 1){
+		document.getElementById("moveUpgradeTotal").innerHTML = "Movement Upgrades Total: " + "+$" + movePoints/2;
+		document.getElementById("timeUpgradeTotal").innerHTML = "Time Upgrades Total: " + "+$" + timePoints;
+	}else{
+		document.getElementById("moveUpgradeTotal").innerHTML = "Movement Upgrades Total: " + "+$" + movePoints;
+		document.getElementById("timeUpgradeTotal").innerHTML = "Time Upgrades Total: " + "+$" + timePoints;
+	}
+	
+	document.getElementById("currency").innerHTML = "$" + score;
+}
+
+function myFunction() {
+
+	score += movePoints;
+
+    //var x = e.clientX;
+    //var y = e.clientY;
+    //var coor = "Coordinates: (" + x + "," + y + ")";
+    document.getElementById("currency").innerHTML = "$" + score;
+}
+
+function moveUpgrade1(){
+	
+	if( score >= moveUpgrade1Cost){
+		movePoints += moveUpgrade1Points;
+		
+		if(bonusFlag == 1){//add another point that will get removed after bonus time is up
+			movePoints += 1
+		}
+		
+		score = score - moveUpgrade1Cost;
+		moveUpgrade1Cost = (moveUpgrade1Cost * 1.1).toFixed();
+		moveUpgrade1Amount += 1;
+	} else{
+		document.getElementById("error").innerHTML = "Not enough moneys!";
+		errFlag = 1;
+	}
+	
+	//moveUpgradeText">Points per Movement: $1
+	//if(bonusFlag == 1){
+	//	document.getElementById("moveUpgradeText").innerHTML = "Income per Movement: " + "$" + movePoints/2;
+	//}else{
+		document.getElementById("moveUpgrade1Text").innerHTML = "Income per Movement: " + "+$" + moveUpgrade1Points + " X" + moveUpgrade1Amount;
+	//}
+	document.getElementById("moveUpgrade1Button").innerHTML = "Upgrade for $" + moveUpgrade1Cost.toLocaleString();
+	document.getElementById("currency").innerHTML = "$" + score;
+}
+
+function timeUpgrade1(){
+	
+	if( score >= timeUpgrade1Cost){
+		timePoints += timeUpgrade1Points;
+		score = score - timeUpgrade1Cost;
+		timeUpgrade1Cost = (timeUpgrade1Cost * 1.25).toFixed();
+		timeUpgrade1Amount += 1;
+	} else{
+		document.getElementById("error").innerHTML = "Not enough moneys!";
+		errFlag = 1;
+	}
+	
+	//moveUpgradeText">Points per Movement: $1
+	document.getElementById("timeUpgrade1Text").innerHTML = "Income per Second: " + "+$" + timeUpgrade1Points + " X" + timeUpgrade1Amount;
+	document.getElementById("timeUpgrade1Button").innerHTML = "Upgrade for $" + timeUpgrade1Cost.toLocaleString();
+	document.getElementById("currency").innerHTML = "$" + score;
+}
+
+function moveUpgrade2(){
+	
+	if( score >= moveUpgrade2Cost){
+		movePoints += moveUpgrade2Points;
+		
+		if(bonusFlag == 1){//add another point that will get removed after bonus time is up
+			movePoints += 1
+		}
+		
+		score = score - moveUpgrade2Cost;
+		moveUpgrade2Cost = (moveUpgrade2Cost * 1.1).toFixed();
+		moveUpgrade2Amount += 1;
+	} else{
+		document.getElementById("error").innerHTML = "Not enough moneys!";
+		errFlag = 1;
+	}
+	
+	//moveUpgradeText">Points per Movement: $1
+	//if(bonusFlag == 1){
+	//	document.getElementById("moveUpgradeText").innerHTML = "Income per Movement: " + "$" + movePoints/2;
+	//}else{
+		document.getElementById("moveUpgrade2Text").innerHTML = "Income per Movement: " + "+$" + moveUpgrade2Points + " X" + moveUpgrade2Amount;
+	//}
+	document.getElementById("moveUpgrade2Button").innerHTML = "Upgrade for $" + moveUpgrade2Cost.toLocaleString();
+	document.getElementById("currency").innerHTML = "$" + score;
+}
+
+function timeUpgrade2(){
+	
+	if( score >= timeUpgrade2Cost){
+		timePoints += timeUpgrade2Points;
+		score = score - timeUpgrade2Cost;
+		timeUpgrade2Cost = (timeUpgrade2Cost * 1.25).toFixed();
+		timeUpgrade2Amount += 1;
+	} else{
+		document.getElementById("error").innerHTML = "Not enough moneys!";
+		errFlag = 1;
+	}
+	
+	//moveUpgradeText">Points per Movement: $1
+	document.getElementById("timeUpgrade2Text").innerHTML = "Income per Second: " + "+$" + timeUpgrade2Points + " X" + timeUpgrade2Amount;
+	document.getElementById("timeUpgrade2Button").innerHTML = "Upgrade for $" + timeUpgrade2Cost.toLocaleString();
+	document.getElementById("currency").innerHTML = "$" + score;
+}
+
+function moveUpgrade3(){
+	
+	if( score >= moveUpgrade3Cost){
+		movePoints += moveUpgrade3Points;
+		
+		if(bonusFlag == 1){//add another point that will get removed after bonus time is up
+			movePoints += 1
+		}
+		
+		score = score - moveUpgrade3Cost;
+		moveUpgrade3Cost = (moveUpgrade3Cost * 1.1).toFixed();
+		moveUpgrade3Amount += 1;
+	} else{
+		document.getElementById("error").innerHTML = "Not enough moneys!";
+		errFlag = 1;
+	}
+	
+	//moveUpgradeText">Points per Movement: $1
+	//if(bonusFlag == 1){
+	//	document.getElementById("moveUpgradeText").innerHTML = "Income per Movement: " + "$" + movePoints/2;
+	//}else{
+		document.getElementById("moveUpgrade3Text").innerHTML = "Income per Movement: " + "+$" + moveUpgrade3Points + " X" + moveUpgrade3Amount;
+	//}
+	document.getElementById("moveUpgrade3Button").innerHTML = "Upgrade for $" + moveUpgrade3Cost.toLocaleString();
+	document.getElementById("currency").innerHTML = "$" + score;
+}
+
+function timeUpgrade3(){
+	
+	if( score >= timeUpgrade3Cost){
+		timePoints += timeUpgrade3Points;
+		score = score - timeUpgrade3Cost;
+		timeUpgrade3Cost = (timeUpgrade3Cost * 1.25).toFixed();
+		timeUpgrade3Amount += 1;
+	} else{
+		document.getElementById("error").innerHTML = "Not enough moneys!";
+		errFlag = 1;
+	}
+	
+	//moveUpgradeText">Points per Movement: $1
+	document.getElementById("timeUpgrade3Text").innerHTML = "Income per Second: " + "+$" + timeUpgrade3Points + " X" + timeUpgrade3Amount;
+	document.getElementById("timeUpgrade3Button").innerHTML = "Upgrade for $" + timeUpgrade3Cost.toLocaleString();
+	document.getElementById("currency").innerHTML = "$" + score;
+}
+//function clearCoor() {
+//    document.getElementById("demo").innerHTML = "";
+//}
+</script>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 /**************************************************
 ** GAME PLAYER CLASS
 **************************************************/
-var Player = function(startX, startY, name, color,type) {
+var Player = function(startX, startY, name, color) {
 	var x = startX,
 		y = startY,
 		id,
@@ -108,7 +108,10 @@ var Player = function(startX, startY, name, color,type) {
 		var i;
 		for (i = 0; i < remotePlayers.length; i++) {
 			if(playersColliding(remotePlayers[i])){
-				allowMove = false;
+				if(size > remotePlayers[i].getSize()){
+					score = score + remotePlayers[i].getScore();
+					remotePlayers[i].setAlive(false);
+				}
 			}
 			
 		};
@@ -126,6 +129,8 @@ var Player = function(startX, startY, name, color,type) {
 		if(alive == false){
 			respawn();
 		}
+		
+		score = score + dt/1000;
 		
 		grow();
 		

@@ -337,7 +337,7 @@ function update(dt) {
 function updateScore(dt) {
 	//score = Math.round(Date.now() - creationTime);
 	//localPlayer.setScore(Math.round(Date.now() - localPlayer.getCreationTime())/1000);
-	localPlayer.setScore(localPlayer.getScore() + dt/1000);
+	//localPlayer.setScore(localPlayer.getScore() + dt/1000);
 	
 	// update score on server 
 	updateScoreTick++;

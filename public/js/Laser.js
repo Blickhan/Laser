@@ -102,7 +102,6 @@ var Laser = function(startX, startY, color, startDirection,startType) {
 				}
 				else if(type == 2){
 					localPlayer.setScore(localPlayer.getScore()+1);
-					localPlayer.setSize(localPlayer.getSize()+.5);
 				}
 			}
 			
