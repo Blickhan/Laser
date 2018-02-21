@@ -31,7 +31,7 @@ function init() {
 	app.use(express.static(__dirname + '/public'));
 	
 	//server.listen(8000);
-	server.listen(80, "0.0.0.0");
+	server.listen(process.env.PORT || 80, "0.0.0.0");
 	
 	// Create an empty array to store players
 	players = [];
